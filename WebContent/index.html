@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+
+	<script src="js\bootstrap.min.js"></script>
+<title>Currency Converter</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6"></div>
+			<div class="col-lg-6"
+				style="margin-top: 210px; margin-left: 420px; font-size: 30px;">
+				<p>Currency Converter</p>
+				<form>
+					<b><font size="3px" text-align="right">Type in Amount and
+						select Currency:</font>
+						</b><table><tr><td style="padding-right:5px"> <input type="text" style="width:150px" placeholder="0.00"
+						class="form-control" id="price" onkeyup="calculateMoneyByM1();"></td><td>
+					<select id="fromCurrency" style="width:80px" onchange="calculateMoneyByM1();"
+						class="form-control">
+						<option value="EUR">EUR</option>
+						<option value="USD">USD</option>
+						<option value="CAD">CAD</option>
+					</select></td></tr></table>
+					<div class="form-group">
+						<b><font size="3px" text-align="right">Converted Amount:</font></b><br>
+						<table><tr><td style="padding-right:5px"><input type="text" style="width:150px" placeholder="0.00" id="equi-price"
+							class="form-control" readonly="readonly"></td><td>
+							<select
+							onchange="calculateMoneyByM1();" style="width:80px" id="toCurrency" class="form-control">
+							<option value="CAD">CAD</option>
+							<option value="USD">USD</option>
+							<option value="EUR">EUR</option>
+						</select></td></tr></table>
+					</div>
+					<font size="3px" style="margin-left:160px"><a href=""
+						onclick="updateCurrencyConvertRate();">Disclaimer</a></font>
+					<div id="currencyConvertRate" style="font-size: 16px;"></div>
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// calculate the currency value
+		
+		
+		function calculateMoneyByM1() {
+
+			var price = document.getElementById("price");
+			var equiPrice = document.getElementById("equi-price");
+			var regex = /^[0-9]*$/;
+			if (price.value.match(regex)) {
+				var from = document.getElementById("fromCurrency");
+				var to = document.getElementById("toCurrency");
+				var xmlhttp = new XMLHttpRequest();
+				var url = "https://api.fixer.io/latest?symbols=" + from.value
+						+ "," + to.value;
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						myObj = JSON.parse(this.responseText);
+						console.log("MY OBJ :: "+JSON.stringify(myObj));
+						if(from.value=="EUR"){
+							var fromValue = 1;
+							var toValue = myObj.rates[to.value];							
+						}
+						else if(to.value=="EUR"){
+							var fromValue = myObj.rates[from.value];
+							var toValue = 1;							
+						}
+						else{
+						var fromValue = myObj.rates[from.value];
+						var toValue = myObj.rates[to.value];
+						}
+						var val = price.value * (toValue / fromValue);
+						equiPrice.value = val.toFixed(2);
+					}
+				};
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send(null);
+				updateCurrencyConvertRate();
+
+			} else {
+				alert("Please type a number");
+				price.value = "";
+				equiPrice.value = "";
+			}
+		}
+		
+		// get currency value
+		function updateCurrencyConvertRate() {
+
+			var from = document.getElementById("fromCurrency");
+			var to = document.getElementById("toCurrency");
+			var xmlhttp = new XMLHttpRequest();
+			var url = "https://api.fixer.io/latest?symbols=" + from.value
+					+ "," + to.value;
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					myObj = JSON.parse(this.responseText);
+					if(from.value=="EUR"){
+						var fromValue = 1;
+						var toValue = myObj.rates[to.value];							
+					}
+					else if(to.value=="EUR"){
+						var fromValue = myObj.rates[from.value];
+						var toValue = 1;							
+					}
+					else{
+					var fromValue = myObj.rates[from.value];
+					var toValue = myObj.rates[to.value];
+					}
+					var val = 1 / fromValue ;
+					document.getElementById("currencyConvertRate").innerHTML= "1"+ from.value + "=" +val.toFixed(2) + to.value;
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send(null);
+
+		}
+	</script>
+</body>
+</html>
