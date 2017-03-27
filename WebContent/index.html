@@ -2,9 +2,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  <link rel="stylesheet" href="Style/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
-	<script src="js\bootstrap.min.js"></script>
 <title>Currency Converter</title>
 </head>
 <body>
@@ -12,33 +16,47 @@
 		<div class="row">
 			<div class="col-lg-6"></div>
 			<div class="col-lg-6"
-				style="margin-top: 190px; margin-left: 400px; font-size: 30px;height: 310px;max-width:350px; padding:20px;border: 1px solid gray;">
+				style="margin-top: 170px; margin-left: 400px; font-size: 30px; height: 330px; max-width: 350px; padding: 20px; border: 1px solid gray;">
 				<p>Currency Converter</p>
 				<form>
-					<b><font size="3px" text-align="right">Type in Amount and
-						select Currency:</font>
-						</b><table><tr><td style="padding-right:5px"> <input type="text" style="width:150px" placeholder="0.00"
-						class="form-control" id="price" onkeyup="calculateMoneyByM1();"></td><td>
-					<select id="fromCurrency" style="width:80px" onchange="calculateMoneyByM1();"
-						class="form-control">
-						<option value="EUR">EUR</option>
-						<option value="USD">USD</option>
-						<option value="CAD">CAD</option>
-					</select></td></tr></table>
+					<b><font size="3px" text-align="right">Type in Amount
+							and select Currency:</font> </b>
+					<table>
+						<tr>
+							<td style="padding-right: 5px"><input type="text"
+								style="width: 150px" placeholder="0.00" class="form-control"
+								id="price" onblur="calculateMoneyByM1();"></td>
+							<td><select id="fromCurrency" style="width: 80px"
+								onchange="calculateMoneyByM1();" class="form-control">
+									<option value="EUR">EUR</option>
+									<option value="USD">USD</option>
+									<option value="CAD">CAD</option>
+							</select></td>
+						</tr>
+					</table>
 					<div class="form-group">
-						<b><font size="3px" text-align="right">Converted Amount:</font></b><br>
-						<table><tr><td style="padding-right:5px"><input type="text" style="width:150px" placeholder="0.00" id="equi-price"
-							class="form-control" readonly="readonly"></td><td>
-							<select
-							onchange="calculateMoneyByM1();" style="width:80px" id="toCurrency" class="form-control">
-							<option value="CAD">CAD</option>
-							<option value="USD">USD</option>
-							<option value="EUR">EUR</option>
-						</select></td></tr></table>
+						<b><font size="3px" text-align="right">Converted
+								Amount:</font></b><br>
+						<table>
+							<tr>
+								<td style="padding-right: 5px"><input type="text"
+									style="width: 150px" placeholder="0.00" id="equi-price"
+									class="form-control" readonly="readonly"></td>
+								<td><select onchange="calculateMoneyByM1();"
+									style="width: 80px" id="toCurrency" class="form-control">
+										<option value="CAD">CAD</option>
+										<option value="USD">USD</option>
+										<option value="EUR">EUR</option>
+								</select></td>
+							</tr>
+						</table>
 					</div>
-					<font size="3px" style="margin-left:160px"><a href="#"
-						onclick="updateCurrencyConvertRate();">Disclaimer</a></font>
-					<div id="currencyConvertRate" style="font-size: 16px;"></div>
+					<font size="3px" style="margin-left: 200px"><a href="#"
+					onclick="updateCurrencyConvertRate()"
+						 data-toggle="collapse"
+						data-target="#currencyConvertRate">Disclaimer*</a></font>
+					<div id="currencyConvertRate" style="font-size:10px"
+						class="collapse"></div>
 
 				</form>
 
@@ -46,75 +64,6 @@
 		</div>
 	</div>
 
-	<script>
-		// calculate the currency value
-		
-		
-		function calculateMoneyByM1() {
-			var price = document.getElementById("price");
-			var equiPrice = document.getElementById("equi-price");
-			var regex = /^[0-9]*$/;
-			if (price.value.match(regex) && price.value.length<7) {
-				var from = document.getElementById("fromCurrency");
-				var to = document.getElementById("toCurrency");
-				var xmlhttp = new XMLHttpRequest();
-				var url = "https://api.fixer.io/latest?symbols=" + from.value
-						+ "," + to.value;
-				xmlhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						myObj = JSON.parse(this.responseText);
-						if(to.value == from.value || (to.value=="EUR" && from.value=="EUR")){
-							var fromValue = 1;
-							var toValue = 1;							
-						}
-						else if(from.value=="EUR"){
-							var fromValue = 1;
-							var toValue = myObj.rates[to.value];							
-						}
-						else if(to.value=="EUR"){
-							var fromValue = myObj.rates[from.value];
-							var toValue = 1;							
-						}
-						else{
-						var fromValue = myObj.rates[from.value];
-						var toValue = myObj.rates[to.value];
-						}
-						var val = price.value * (toValue / fromValue);
-						equiPrice.value = val.toFixed(2);
-					}
-				};
-				xmlhttp.open("GET", url, true);
-				xmlhttp.send(null);
-				document.getElementById("currencyConvertRate").innerHTML="";
-			} else {
-				alert("Please give a valid input");
-				price.value = "";
-				equiPrice.value = "";
-			}
-		}
-		
-		// get currency value
-		function updateCurrencyConvertRate() {
-			var from = document.getElementById("fromCurrency");
-			var to = document.getElementById("toCurrency");
-			var xmlhttp = new XMLHttpRequest();
-			var url = "http://api.fixer.io/latest?base=" + from.value;
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					myObj = JSON.parse(this.responseText);
-					if(to.value == from.value || (to.value==="EUR" && from.value==="EUR")){
-						var toValue = 1;							
-					}
-					else{
-					var fromValue = myObj.rates[from.value];
-					var toValue = myObj.rates[to.value];
-					}
-					document.getElementById("currencyConvertRate").innerHTML= "1"+ from.value + "=" +toValue.toFixed(2) + to.value;
-				}
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send(null);
-		}
-	</script>
+	<script src="js\conversion.js"></script>
 </body>
 </html>
