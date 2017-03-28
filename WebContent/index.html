@@ -2,12 +2,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-  <link rel="stylesheet" href="Style/bootstrap.min.css">
-  <script src="js/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="Style/bootstrap.min.css">
+<link rel="stylesheet" href="Style/StyleCss.css">
+<script src="js/bootstrap.min.js"></script>
 
 <title>Currency Converter</title>
 </head>
@@ -16,16 +13,16 @@
 		<div class="row">
 			<div class="col-lg-6"></div>
 			<div class="col-lg-6"
-				style="margin-top: 170px; margin-left: 400px; font-size: 30px; height: 330px; max-width: 350px; padding: 20px; border: 1px solid gray;">
+				style="margin-top: 170px; margin-left: 400px; font-size: 30px; height: 330px; max-width: 340px; padding: 20px; border: 1px solid gray;">
 				<p>Currency Converter</p>
 				<form>
 					<b><font size="3px" text-align="right">Type in Amount
 							and select Currency:</font> </b>
 					<table>
 						<tr>
-							<td style="padding-right: 5px"><input type="text"
-								style="width: 150px" placeholder="0.00" class="form-control"
-								id="price" onblur="calculateMoneyByM1();"></td>
+							<td style="padding-right: 5px"><input type="number"
+								style="width: 150px;" placeholder="0.00" class="form-control" id="price"
+								onkeyup="calculateMoneyByM1();"></td>
 							<td><select id="fromCurrency" style="width: 80px"
 								onchange="calculateMoneyByM1();" class="form-control">
 									<option value="EUR">EUR</option>
@@ -52,11 +49,8 @@
 						</table>
 					</div>
 					<font size="3px" style="margin-left: 200px"><a href="#"
-					onclick="updateCurrencyConvertRate()"
-						 data-toggle="collapse"
-						data-target="#currencyConvertRate">Disclaimer*</a></font>
-					<div id="currencyConvertRate" style="font-size:10px"
-						class="collapse"></div>
+						onclick="updateCurrencyConvertRate()">Disclaimer*</a></font>
+					<div id="currencyConvertRate" style="font-size: 10px"></div>
 
 				</form>
 
