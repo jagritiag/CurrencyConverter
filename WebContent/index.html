@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-lg-6"></div>
 			<div class="col-lg-6"
-				style="margin-top: 170px; margin-left: 400px; font-size: 30px; height: 330px; max-width: 340px; padding: 20px; border: 1px solid gray;">
+				style="position: fixed; left: 38%; top: 25%; font-size: 30px; height: 330px; max-width: 340px; padding: 20px; border: 1px solid gray;">
 				<p>Currency Converter</p>
 				<form>
 					<b><font size="3px" text-align="right">Type in Amount
@@ -21,13 +21,14 @@
 					<table>
 						<tr>
 							<td style="padding-right: 5px"><input type="number"
-								style="width: 150px;" placeholder="0.00" class="form-control" id="price"
-								onkeyup="calculateMoneyByM1();"></td>
+								style="width: 150px;" placeholder="0.00" class="form-control"
+								id="price" onkeyup="calculateMoneyByM1();"
+								onkeypress="return RestrictSignKey()"></td>
 							<td><select id="fromCurrency" style="width: 80px"
 								onchange="calculateMoneyByM1();" class="form-control">
-									<option value="EUR">EUR</option>
-									<option value="USD">USD</option>
 									<option value="CAD">CAD</option>
+									<option value="USD">USD</option>
+									<option value="EUR">EUR</option>
 							</select></td>
 						</tr>
 					</table>
@@ -41,9 +42,9 @@
 									class="form-control" readonly="readonly"></td>
 								<td><select onchange="calculateMoneyByM1();"
 									style="width: 80px" id="toCurrency" class="form-control">
-										<option value="CAD">CAD</option>
 										<option value="USD">USD</option>
 										<option value="EUR">EUR</option>
+										<option value="CAD">CAD</option>
 								</select></td>
 							</tr>
 						</table>
@@ -55,7 +56,9 @@
 				</form>
 
 			</div>
+
 		</div>
+
 	</div>
 
 	<script src="js\conversion.js"></script>
