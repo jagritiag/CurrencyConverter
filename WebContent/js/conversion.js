@@ -70,3 +70,10 @@ function updateCurrencyConvertRate() {
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send(null);
 }
+
+function RestrictSignKey() {
+	if (event.keyCode == 45 || event.keyCode == 43) {
+		event.returnValue = false;
+		return false;
+	}
+}
