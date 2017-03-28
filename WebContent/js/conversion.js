@@ -3,7 +3,7 @@ function calculateMoneyByM1() {
 	var price = document.getElementById("price");
 	var equiPrice = document.getElementById("equi-price");
 	var regex =/^\d+(\.\d{1,2})?$/;
-	if (price.value.match(regex) && price.value.length < 10) {
+	if (price.value.match(regex)) {
 		var from = document.getElementById("fromCurrency");
 		var to = document.getElementById("toCurrency");
 		var xmlhttp = new XMLHttpRequest();
@@ -32,9 +32,7 @@ function calculateMoneyByM1() {
 		};
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send(null);
-		document.getElementById("currencyConvertRate").innerHTML = "";
 	} else {
-		alert("Please give a valid input");
 		price.value = "";
 		equiPrice.value = "";
 	}
@@ -56,13 +54,17 @@ function updateCurrencyConvertRate() {
 				var fromValue = myObj.rates[from.value];
 				var toValue = myObj.rates[to.value];
 			}
-			document.getElementById("currencyConvertRate").innerHTML = "1"
+			var doc = document.getElementById("currencyConvertRate");
+			doc.innerHTML = "1"
 					+ from.value
 					+ "="
 					+ toValue.toFixed(2)
 					+ to.value
 					+ "<br />"
 					+ "* Information provided in this page is for user purpose only. Rates are subject to change.";
+
+			doc.style.display = (doc.style.display == 'block') ? 'none'
+					: 'block';
 		}
 	};
 	xmlhttp.open("GET", url, true);
