@@ -3,64 +3,42 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" href="Style/bootstrap.min.css">
+<link rel="stylesheet" href="Style/cssForHtml.css">
 <link rel="stylesheet" href="Style/StyleCss.css">
 <script src="js/bootstrap.min.js"></script>
-
+<script src="js/angular.min.js"></script>
+<script src="js/angular-sanitize.js"></script>
+<script src="js/controller.js"></script>
 <title>Currency Converter</title>
 </head>
-<body>
+<body ng-app="myApp" ng-controller="myCtrl">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6"></div>
-			<div class="col-lg-6"
-				style="position: fixed; left: 38%; top: 25%; font-size: 30px; height: 330px; max-width: 340px; padding: 20px; border: 1px solid gray;">
+			<div class="col-lg-6" id="mainDiv">
 				<p>Currency Converter</p>
-				<form>
-					<b><font size="3px" text-align="right">Type in Amount
+				<form class="form" >
+					<b><font size="3px">Type in Amount
 							and select Currency:</font> </b>
-					<table>
-						<tr>
-							<td style="padding-right: 5px"><input type="number"
-								style="width: 150px;" placeholder="0.00" class="form-control"
-								id="price" onkeyup="calculateMoneyByM1();"
-								onkeypress="return RestrictSignKey()"></td>
-							<td><select id="fromCurrency" style="width: 80px"
-								onchange="calculateMoneyByM1();" class="form-control">
-									<option value="CAD">CAD</option>
-									<option value="USD">USD</option>
-									<option value="EUR">EUR</option>
-							</select></td>
-						</tr>
-					</table>
-					<div class="form-group">
-						<b><font size="3px" text-align="right">Converted
-								Amount:</font></b><br>
-						<table>
-							<tr>
-								<td style="padding-right: 5px"><input type="text"
-									style="width: 150px" placeholder="0.00" id="equi-price"
-									class="form-control" readonly="readonly"></td>
-								<td><select onchange="calculateMoneyByM1();"
-									style="width: 80px" id="toCurrency" class="form-control">
-										<option value="USD">USD</option>
-										<option value="EUR">EUR</option>
-										<option value="CAD">CAD</option>
-								</select></td>
-							</tr>
-						</table>
-					</div>
-					<font size="3px" style="margin-left: 200px"><a href="#"
-						onclick="updateCurrencyConvertRate()">Disclaimer*</a></font>
-					<div id="currencyConvertRate" style="font-size: 10px"></div>
-
+								<input type="number" id="inputBox"
+							    class="form-control" placeholder="0.00"
+								ng-model="price" ng-keyup="calculateMoney();"
+								ng-pattern="/^\d+(\.\d{1,2})?$/"
+								ng-keypress="RestrictSignKey();">
+							<select id="selectOption" ng-model="fromCurrency" ng-change="calculateMoney();" class="form-control">
+									<option ng-repeat="type in currencyList">{{type}}</option>
+							</select>
+					<b><font size="3px">Converted Amount:</font></b><br>
+								<input type="text" id="inputBox" ng-model="equiprice" class="form-control" placeholder="0.00" readonly="readonly" >
+								<select id="selectOption" ng-change="calculateMoney();" ng-model="toCurrency" class="form-control">
+									<option ng-repeat="type in currency_List">{{type}}</option>
+								</select>
+					<font size="3px" style="margin-left: 200px"><a ng-href=""
+						ng-click="updateCurrencyConvertRate();">Disclaimer*</a></font>
+					<p ng-bind-html="currencyConvertRate" style="font-size: 10px"></p>
 				</form>
-
 			</div>
-
 		</div>
-
 	</div>
-
-	<script src="js\conversion.js"></script>
 </body>
 </html>
